@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags:
+      - v*
+env:
+  A_REPO: repoA
+  B_REPO: repoB
+  ECR_REPO_NAME: push-test
+      
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
