@@ -30,7 +30,7 @@ jobs:
             echo "B_RELEASE_VERSION: ${B_RELEASE_VERSION}"
             source $BASH_ENV
       - aws-ecr/build-and-push-image:
-          account-url: AWS_ECR_REGISTRY_ID
+          registry-id: AWS_ECR_REGISTRY_ID
           region: ${AWS_DEFAULT_REGION}
           repo: ${ECR_REPO_NAME}
           tag: ${CIRCLE_TAG}
