@@ -17,7 +17,9 @@ workflows:
       - aws-ecr/build-and-push-image:
           executor: my-executor
           context: research
-          repo: $ECR_REPO_NAME
+          repo: ${ECR_REPO_NAME}
+          region: ${AWS_DEFAULT_REGION}
+          registry-id: ${AWS_ECR_REGISTRY_ID}
           tag: "${CIRCLE_TAG}"
           filters:
             branches:
