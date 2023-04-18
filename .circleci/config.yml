@@ -2,6 +2,7 @@ version: 2.1
 
 executors:
   my-executor:
+    machine: true
     environment:
       A_REPO: repoA
       B_REPO: repoB
@@ -15,7 +16,6 @@ workflows:
     jobs:
       - aws-ecr/build-and-push-image:
           executor: my-executor
-          machine: true
           context: research
           repo: $ECR_REPO_NAME
           tag: "${CIRCLE_TAG}"
