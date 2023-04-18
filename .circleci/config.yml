@@ -22,7 +22,7 @@ jobs:
           name: Get Repository Release Version
           command: |
             echo "export A_RELEASE_VERSION=$(gh api repos/${CIRCLE_PROJECT_USERNAME}/${A_REPO}/releases/latest --jq '.tag_name')" >> "$BASH_ENV"
-            echo "export B_RELEASE_VERSION=$(gh api repos/${CIRCLE_PROJECT_USERNAME}/${B_REPO}/releases/latest --jq '.tag_name' | sed 's/^v//')" >> "$BASH_ENV"
+            echo "export B_RELEASE_VERSION=$(gh api repos/${CIRCLE_PROJECT_USERNAME}/${B_REPO}/releases/latest --jq '.tag_name')" >> "$BASH_ENV"
       - run:
           name: Print Environment Variables
           command: |
@@ -35,15 +35,6 @@ jobs:
           repo: ${ECR_REPO_NAME}
           tag: ${CIRCLE_TAG}
           extra-build-args: --build-arg repoA=${A_RELEASE_VERSION} --build-arg repoB=${B_RELEASE_VERSION}
-      # - aws-ecr/ecr-login:
-      #     region: ${AWS_DEFAULT_REGION}
-      #     registry-id: AWS_ECR_REGISTRY_ID
-      # - run:
-      #     name: Build and push image
-      #     command: |
-      #       docker build --build-arg repoA=${A_RELEASE_VERSION} --build-arg repoB=${B_RELEASE_VERSION} -t ${ECR_REPO_NAME} .
-      #       docker tag ${ECR_REPO_NAME}:latest ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${CIRCLE_TAG}
-      #       docker push ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${CIRCLE_TAG}
 
 workflows:
   build-push-image:
