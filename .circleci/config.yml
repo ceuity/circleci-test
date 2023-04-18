@@ -11,16 +11,37 @@ executors:
 orbs:
   aws-ecr: circleci/aws-ecr@8.2.1
 
+jobs:
+  build-push-image:
+    executor: my-executor
+    steps:
+      - checkout
+      - run:
+          name: Get Repository Release Version
+          command: |
+            echo "export A_RELEASE_VERSION=$(gh api repos/${CIRCLE_PROJECT_USERNAME}/${A_REPO}/releases/latest --jq '.tag_name')" >> "$BASH_ENV"
+            echo "export B_RELEASE_VERSION=$(gh api repos/${CIRCLE_PROJECT_USERNAME}/${B_REPO}/releases/latest --jq '.tag_name' | sed 's/^v//')" >> "$BASH_ENV"
+      - run:
+          name: Print Environment Variables
+          command: |
+            echo "A_RELEASE_VERSION: ${A_RELEASE_VERSION}"
+            echo "B_RELEASE_VERSION: ${B_RELEASE_VERSION}"
+            source $BASH_ENV
+      - aws-ecr/ecr-login:
+          region: ${AWS_DEFAULT_REGION}
+          registry-id: AWS_ECR_REGISTRY_ID
+      - run:
+          name: Build and push image
+          command: |
+            docker build --build-arg repoA=${A_RELEASE_VERSION} --build-arg repoB=${B_RELEASE_VERSION} -t ${ECR_REPO_NAME} .
+            docker tag ${ECR_REPO_NAME}:latest ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${CIRCLE_TAG}
+            docker push ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${CIRCLE_TAG}
+
 workflows:
   build-push-image:
     jobs:
-      - aws-ecr/build-and-push-image:
-          executor: my-executor
+      - build-push-image:
           context: research
-          repo: ${ECR_REPO_NAME}
-          region: ${AWS_DEFAULT_REGION}
-          registry-id: AWS_ECR_REGISTRY_ID
-          tag: "${CIRCLE_TAG}"
           filters:
             branches:
               ignore: /.*/
