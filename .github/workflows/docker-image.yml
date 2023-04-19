@@ -4,6 +4,9 @@ on:
   push:
     branch:
       - main
+    ignore:
+      tags:
+        - *
     # tags:
     #   - v*
 env:
