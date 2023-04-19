@@ -17,15 +17,22 @@ jobs:
     if: github.event_name == 'push'
     steps:
     - uses: actions/checkout@v3
+    - name: Get Repository Release Version
+      run: |
+        echo "export A_RELEASE_VERSION=$(gh api repos/${{ github.repository_owner }}/${{ env.A_REPO }}/releases/latest --jq '.tag_name')" >> $GITHUB_ENV
+        echo "export B_RELEASE_VERSION=$(gh api repos/${{ github.repository_owner }}/${{ env.B_REPO }}/releases/latest --jq '.tag_name')" >> $GITHUB_ENV
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Print Environment Variables
       run: |
         echo "A_REPO: ${A_REPO}"
         echo "B_REPO: ${B_REPO}"
+        echo "A_RELEASE_VERSION: ${{ env.A_RELEASE_VERSION }}"
+        echo "B_RELEASE_VERSION: ${{ env.B_RELEASE_VERSION }}"
         echo "ECR_REPO_NAME: ${ECR_REPO_NAME}"
         echo "github.event_name: ${{ github.event_name }}"
         echo "github.actor: ${{ github.actor }}"
         echo "github.repository : ${{ github.repository }}"
-        echo "secret.token : ${{ secrets.GITHUB_TOKEN }}"
 
     # - name: Build the Docker image
     #   run: |
