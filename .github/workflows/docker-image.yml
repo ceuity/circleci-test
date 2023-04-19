@@ -17,6 +17,11 @@ jobs:
     if: github.event_name == 'push'
     steps:
     - uses: actions/checkout@v3
+    - name: Print Repository Release Version
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        gh api repos/${{ github.repository_owner }}/${{ env.A_REPO }}/releases/latest
+        gh api repos/${{ github.repository_owner }}/${{ env.B_REPO }}/releases/latest
     - name: Get Repository Release Version
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
