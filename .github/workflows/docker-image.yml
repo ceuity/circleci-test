@@ -2,21 +2,30 @@ name: Docker Image CI
 
 on:
   push:
-    tags:
-      - v*
+    branch:
+      - main
+    # tags:
+    #   - v*
 env:
   A_REPO: repoA
   B_REPO: repoB
   ECR_REPO_NAME: push-test
       
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Print Environment Variables
       run: |
-        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        echo "A_REPO: ${A_REPO}"
+        echo "B_REPO: ${B_REPO}"
+        echo "ECR_REPO_NAME: ${ECR_REPO_NAME}"
+        echo "github.event_name: ${{ github.event_name }}"
+        echo "github.actor: ${{ github.actor }}"
+        echo "github.repository : ${{ github.repository }}"
+
+    # - name: Build the Docker image
+    #   run: |
+    #     docker build . --file Dockerfile --tag my-image-name:$(date +%s)
