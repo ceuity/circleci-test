@@ -32,7 +32,7 @@ jobs:
       run: |
         A_RELEASE_VERSION=$(echo ${{ env.A_RELEASE_VERSION }} | sed 's/^v//')
         B_RELEASE_VERSION=$(echo ${{ env.B_RELEASE_VERSION }} | sed 's/^v//')
-        echo "IMAGE_TAG=1.10.0-py3.7-v1-eval-${{ env.A_REPO }}-$A_RELEASE_VERSION{ env.B_REPO }}-$B_RELEASE_VERSION" >> $GITHUB_ENV
+        echo "IMAGE_TAG=1.10.0-py3.7-v1-eval-${{ env.A_REPO }}-$A_RELEASE_VERSION-${{ env.B_REPO }}-$B_RELEASE_VERSION" >> $GITHUB_ENV
 
     - name: Print Environment Variables
       run: |
