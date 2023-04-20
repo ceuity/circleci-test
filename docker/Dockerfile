@@ -5,3 +5,5 @@ RUN echo "repoA: $repoA"
 RUN echo "repoB: $repoB"
 ENV repoA=$repoA
 ENV repoB=$repoB
+
+ADD sample /root/sample

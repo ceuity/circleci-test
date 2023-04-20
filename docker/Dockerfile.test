@@ -1,0 +1,9 @@
+FROM busybox:latest
+ARG repoC=v0.0.1
+ARG repoD=v1.0.0
+RUN echo "repoC: $repoC"
+RUN echo "repoD: $repoD"
+ENV repoC=$repoC
+ENV repoD=$repoD
+
+ADD sample /root/sample

@@ -2,7 +2,8 @@ version: 2.1
 
 executors:
   my-executor:
-    machine: true
+    machine:
+      image: ubuntu-2204:2023.02.1
     environment:
       A_REPO: repoA
       B_REPO: repoB
@@ -13,7 +14,7 @@ orbs:
   aws-ecr: circleci/aws-ecr@8.2.1
 
 jobs:
-  build-push-image:
+  build-push-image-jobs:
     executor: my-executor
     steps:
       - github-cli/setup
@@ -34,12 +35,13 @@ jobs:
           region: ${AWS_DEFAULT_REGION}
           repo: ${ECR_REPO_NAME}
           tag: ${CIRCLE_TAG}
-          extra-build-args: --build-arg repoA=${A_RELEASE_VERSION} --build-arg repoB=${B_RELEASE_VERSION}
+          dockerfile: Dockerfile.test
+          extra-build-args: --build-arg repoC=${A_RELEASE_VERSION} --build-arg repoD=${B_RELEASE_VERSION}
 
 workflows:
   build-push-image:
     jobs:
-      - build-push-image:
+      - build-push-image-jobs:
           context: research
           filters:
             branches:
