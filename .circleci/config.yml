@@ -36,6 +36,7 @@ jobs:
           repo: ${ECR_REPO_NAME}
           tag: ${CIRCLE_TAG}
           path: ./docker
+          build-path: ./docker
           dockerfile: Dockerfile.test
           extra-build-args: --build-arg repoC=${A_RELEASE_VERSION} --build-arg repoD=${B_RELEASE_VERSION}
 
