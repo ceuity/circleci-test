@@ -35,6 +35,7 @@ jobs:
           region: ${AWS_DEFAULT_REGION}
           repo: ${ECR_REPO_NAME}
           tag: ${CIRCLE_TAG}
+          path: ./docker
           dockerfile: Dockerfile.test
           extra-build-args: --build-arg repoC=${A_RELEASE_VERSION} --build-arg repoD=${B_RELEASE_VERSION}
 
