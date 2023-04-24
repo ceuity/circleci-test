@@ -15,7 +15,7 @@ jobs:
       - name: Notify Slack
         uses: slackapi/slack-github-action@v1.23.0
         with:
-          channel-id: ${{ env.SLACK_CHANNEL }}
+          channel-id: ${{ secrets.SLACK_CHANNEL }}
           slack-message: "New tag pushed: ${{ github.ref }}"
         env:
-          SLACK_BOT_TOKEN: ${{ env.SLACK_BOT_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
