@@ -1,0 +1,21 @@
+name: Notify Slack
+
+on:
+  push:
+    tags:
+      - "test*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: github.event_name == 'push'
+    steps:
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: ${{ env.SLACK_CHANNEL }}
+          slack-message: "New tag pushed: ${{ github.ref }}"
+        env:
+          SLACK_BOT_TOKEN: ${{ env.SLACK_BOT_TOKEN }}
