@@ -13,7 +13,7 @@ jobs:
     if: github.event_name == 'push'
     steps:
       - name: Get current date
-        run: echo "$NOW=$(date +'%m/%d/%Y %T')" >> $GITHUB_ENV
+        run: echo "NOW=$(date +'%m/%d/%Y %T')" >> $GITHUB_ENV
       - name: Notify Slack
         uses: slackapi/slack-github-action@v1.23.0
         with:
